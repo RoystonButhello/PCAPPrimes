@@ -64,6 +64,8 @@ int main(int argc, char *argv[])
 	
 	if (m % 2 == 0) 
 		m--;
+    
+	//Boolean array initialized to false
     _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
 	integer *P = (integer *)calloc(plen, size);
 
@@ -75,7 +77,7 @@ int main(int argc, char *argv[])
 	exit(0); 
 	}*/
 
-	//Boolean array initialized to false
+	
 	
 	
 	if (mark == NULL || P == NULL) { printf("Memory Allocation Failed!\n"); exit(1); }
