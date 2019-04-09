@@ -53,6 +53,24 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
     MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
 	
+    
+	//Boolean array initialized to false
+    _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
+	integer *P = (integer *)calloc(plen, size);
+	
+
+	if (mark == NULL || P == NULL) 
+	{ 
+		printf("Memory Allocation Failed!\n"); 
+		exit(1); 
+	}
+	integer i, j, k;
+
+	//Log execution time
+	clock_t START_TIME, END_TIME;
+	double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
+    
+    
     integer n;
 	printf("Enter limit: "); 
 	scanf("%llu", &n); 
@@ -64,10 +82,7 @@ int main(int argc, char *argv[])
 	
 	if (m % 2 == 0) 
 		m--;
-    
-	//Boolean array initialized to false
-    _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
-	integer *P = (integer *)calloc(plen, size);
+
 
 	//Prep file-pointer to write results to text file
 	/*FILE *fp = fopen("primes.txt", "w");
@@ -80,12 +95,8 @@ int main(int argc, char *argv[])
 	
 	
 	
-	if (mark == NULL || P == NULL) { printf("Memory Allocation Failed!\n"); exit(1); }
-	integer i, j, k;
 
-	//Log execution time
-	clock_t START_TIME, END_TIME;
-	double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
+	
 
 	//Setup-Phase: Calculate all primes in the range [3,m]
 	START_TIME = clock();
