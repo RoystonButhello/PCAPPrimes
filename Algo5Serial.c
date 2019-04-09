@@ -51,8 +51,12 @@ int main()
 	if (m % 2 == 0) m--;
 
 	//Prep file-pointer to write results to text file
-	FILE *fp = fopen("primes.txt", "w");
-	if (fp == NULL) { printf("File-exception!\n"); exit(0); }
+	/*FILE *fp = fopen("primes.txt", "w");
+	if (fp == NULL) 
+	{ 
+	printf("File-exception!\n"); 
+	exit(0); 
+	}*/
 
 	//Boolean array initialized to false
 	_Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
@@ -75,7 +79,7 @@ int main()
 				for (j = i * i; j <= m; j += (i << 1))	//j->[i^2,n] | increments by 2*i
 					mark[j >> 1] = 1;
 			}
-			fprintf(fp, "%llu\n", i);
+			fprintf("%llu\n", i);
 			P[k++] = i;
 		}
 	}
@@ -111,13 +115,13 @@ int main()
 		CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 		for (i = 0; i < limit; i++)
 			if (!mark[i])
-				fprintf(fp, "%llu\n", min + (i << 1) + 1);
+				fprintf("%llu\n", min + (i << 1) + 1);
 		START_TIME = clock();
 		min += (blocksize << 1);
 		max += (blocksize << 1);
 		free(mark);
 	}
-	fclose(fp);
+	//fclose(fp);
 	END_TIME = clock();
 	CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 	printf("\n\nSETUP-PHASE CPU Time: %0.3f seconds\n", CPU_TIME1);
