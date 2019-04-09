@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <mpi.h>
 
 typedef unsigned long long integer;
 const size_t size = sizeof(integer);
@@ -42,10 +43,16 @@ integer trimSize(integer n)
 }
 
 //Driver function
-int main()
+int main(int argc, char *argv[])
 {
 	//Range: Data-type dependent
-	integer n; 
+    	
+    int p_rank,p_size;
+    MPI_Init(&argc,&argv);
+    MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
+    MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
+	
+    integer n;
 	printf("Enter limit: "); 
 	scanf("%llu", &n); 
 
@@ -134,6 +141,8 @@ int main()
 	CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 	printf("\n\nSETUP-PHASE CPU Time: %0.3f seconds\n", CPU_TIME1);
 	printf("COMPUTE-PHASE CPU Time: %0.3f seconds\n", CPU_TIME2);
+	
+    MPI_Finalize();
 	return 0;
 
 }
