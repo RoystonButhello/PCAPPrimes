@@ -129,12 +129,20 @@ int main(int argc, char *argv[])
     
     }
 	
+	
 	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
 	//Doubled as a blocksize of X covers 2X digits
-	
+
 	//Max limit 1XE10
     
+    //Benchmarks 
+    //limit tested:1E9
+    //Algo5Serial.c:SETUP_PHASE_CPU_TIME:0.021s
+    //Algo5Serial.c:COMPUTE_PHASE_CPU_TIME:7.352s
+    //algo5mpi.c:SETUP_PHASE_CPU_TIME:0.026s   (after adding if(p_rank==0))
+    //algo5mpi.c:COMPUTE_PHASE_CPU_TIME:7.173s (after adding if(p_rank==0))
+   
     integer i,j;
 
 	integer min = blocksize << 1;
@@ -146,9 +154,12 @@ int main(int argc, char *argv[])
 	{
 		if (max >= n)
 		{
-			max = n; limit = (max - min) >> 1 + 1;
+			max = n; 
+			limit = (max - min) >> 1 + 1;
 		}
+		
 		mark = (_Bool *)calloc(blocksize + 1, sizeof(_Bool));
+		
 		for (i = 0;i < plen;i++)
 		{
 			//Find smallest odd-multiple of P[i] w/i range [min,max]
@@ -158,18 +169,22 @@ int main(int argc, char *argv[])
 			for (j = minb; j < max; j += 2 * P[i])
 				mark[(j - min) >> 1] = 1;
 		}
+		
 		END_TIME = clock();
 		CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
+		
 		for (i = 0; i < limit; i++)
 			if (!mark[i])
 				printf("%llu\n", min + (i << 1) + 1);
+		
 		START_TIME = clock();
 		min += (blocksize << 1);
 		max += (blocksize << 1);
 		free(mark);
 	}
 	//fclose(fp);
-	END_TIME = clock();
+	
+    END_TIME = clock();
 	CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 	printf("\n\nSETUP-PHASE CPU Time: %0.3f seconds\n", CPU_TIME1);
 	printf("COMPUTE-PHASE CPU Time: %0.3f seconds\n", CPU_TIME2);
