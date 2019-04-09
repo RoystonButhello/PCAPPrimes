@@ -20,6 +20,7 @@ integer plen;
 
 //Global declaration of Boolean array
 _Bool *mark;
+integer *P;
 
 //Log execution time
 clock_t START_TIME, END_TIME;
@@ -66,30 +67,30 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
     MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
 	
-    
-    integer i, j, k;
+    if(p_rank==0)
+    {	
 
-    printf("Enter limit: "); 
-	scanf("%llu", &n); 
+       printf("Enter limit: "); 
+	   scanf("%llu", &n); 
     
-	n = bound(n);
-	m = sqrt(n);
-	blocksize = m >> 1;
-	plen = trimSize(m);
+	   n = bound(n);
+	   m = sqrt(n);
+	   blocksize = m >> 1;
+	   plen = trimSize(m);
 	
-	if (m % 2 == 0) 
-		m--;
+	   if (m % 2 == 0) 
+		  m--;
 
     
-    //Boolean array initialized to false
-    mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
-	integer *P = (integer *)calloc(plen, size);
+       //Boolean array initialized to false
+       mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
+	   P = (integer *)calloc(plen, size);
 	
-	if (mark == NULL || P == NULL) 
-	{ 
-		printf("Memory Allocation Failed!\n"); 
-		exit(1); 
-	}
+	   if (mark == NULL || P == NULL) 
+	   { 
+		  printf("Memory Allocation Failed!\n"); 
+		  exit(1); 
+	   }
 	
 
 	//Prep file-pointer to write results to text file
@@ -104,8 +105,8 @@ int main(int argc, char *argv[])
 	
 	
 
-	
-
+	//Loop variables
+    integer i,j,k;
 	//Setup-Phase: Calculate all primes in the range [3,m]
 	START_TIME = clock();
 	for (i = 3, k = 0; i < m; i += 2)	//i->[3,5,7,9...,sqrt(n)] | i corresponds to mark[(i-3)/2]
@@ -125,14 +126,16 @@ int main(int argc, char *argv[])
 	plen = k;
 	END_TIME = clock();
 	CPU_TIME1 = ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
-
+    
+    }
 	
-	//}
 	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
 	//Doubled as a blocksize of X covers 2X digits
 	
 	//Max limit 1XE10
+    
+    integer i,j;
 
 	integer min = blocksize << 1;
 	integer max = blocksize << 2;
