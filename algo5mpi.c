@@ -3,14 +3,23 @@
 //Phase 2 covers seed values beyond sqrt(n) in blocks
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <math.h>
 #include <time.h>
-#include <mpi.h>
+ //#include <mpi.h>
 
 typedef unsigned long long integer;
 const size_t size = sizeof(integer);
 
+//The number of primes to find
+integer n;
+
+integer m;
+integer blocksize;
+integer plen;
+
+//Log execution time
+clock_t START_TIME, END_TIME;
+double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
 
 //Utility function to calculate postive integer-powers
 integer power(integer val, integer exp)
@@ -49,40 +58,35 @@ int main(int argc, char *argv[])
 	//Range: Data-type dependent
     	
     int p_rank,p_size;
-    MPI_Init(&argc,&argv);
-    MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
-    MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
+    //MPI_Init(&argc,&argv);
+    //MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
+    //MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
 	
     
-	//Boolean array initialized to false
+    integer i, j, k;
+
+    printf("Enter limit: "); 
+	scanf("%llu", &n); 
+    
+	n = bound(n);
+	m = sqrt(n);
+	blocksize = m >> 1;
+	plen = trimSize(m);
+	
+	if (m % 2 == 0) 
+		m--;
+
+    
+    //Boolean array initialized to false
     _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
 	integer *P = (integer *)calloc(plen, size);
 	
-
 	if (mark == NULL || P == NULL) 
 	{ 
 		printf("Memory Allocation Failed!\n"); 
 		exit(1); 
 	}
-	integer i, j, k;
-
-	//Log execution time
-	clock_t START_TIME, END_TIME;
-	double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
-    
-    
-    integer n;
-	printf("Enter limit: "); 
-	scanf("%llu", &n); 
-    
-	n = bound(n);
-	integer m = sqrt(n);
-	integer blocksize = m >> 1;
-	integer plen = trimSize(m);
 	
-	if (m % 2 == 0) 
-		m--;
-
 
 	//Prep file-pointer to write results to text file
 	/*FILE *fp = fopen("primes.txt", "w");
@@ -118,6 +122,8 @@ int main(int argc, char *argv[])
 	END_TIME = clock();
 	CPU_TIME1 = ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 
+	
+	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
 	//Doubled as a blocksize of X covers 2X digits
 	integer min = blocksize << 1;
@@ -157,7 +163,7 @@ int main(int argc, char *argv[])
 	printf("\n\nSETUP-PHASE CPU Time: %0.3f seconds\n", CPU_TIME1);
 	printf("COMPUTE-PHASE CPU Time: %0.3f seconds\n", CPU_TIME2);
 	
-    MPI_Finalize();
+    //MPI_Finalize();
 	return 0;
 
 }
