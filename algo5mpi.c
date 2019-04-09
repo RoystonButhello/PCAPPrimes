@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
- //#include <mpi.h>
+#include <mpi.h>
+
 
 typedef unsigned long long integer;
 const size_t size = sizeof(integer);
@@ -16,6 +17,9 @@ integer n;
 integer m;
 integer blocksize;
 integer plen;
+
+//Global declaration of Boolean array
+_Bool *mark;
 
 //Log execution time
 clock_t START_TIME, END_TIME;
@@ -58,9 +62,9 @@ int main(int argc, char *argv[])
 	//Range: Data-type dependent
     	
     int p_rank,p_size;
-    //MPI_Init(&argc,&argv);
-    //MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
-    //MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
+    MPI_Init(&argc,&argv);
+    MPI_Comm_rank(MPI_COMM_WORLD,&p_rank);
+    MPI_Comm_size(MPI_COMM_WORLD,&p_size);	
 	
     
     integer i, j, k;
@@ -78,7 +82,7 @@ int main(int argc, char *argv[])
 
     
     //Boolean array initialized to false
-    _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
+    mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
 	integer *P = (integer *)calloc(plen, size);
 	
 	if (mark == NULL || P == NULL) 
@@ -123,9 +127,13 @@ int main(int argc, char *argv[])
 	CPU_TIME1 = ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 
 	
+	//}
 	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
 	//Doubled as a blocksize of X covers 2X digits
+	
+	//Max limit 1XE10
+
 	integer min = blocksize << 1;
 	integer max = blocksize << 2;
 	integer limit = blocksize;
@@ -163,7 +171,8 @@ int main(int argc, char *argv[])
 	printf("\n\nSETUP-PHASE CPU Time: %0.3f seconds\n", CPU_TIME1);
 	printf("COMPUTE-PHASE CPU Time: %0.3f seconds\n", CPU_TIME2);
 	
-    //MPI_Finalize();
+    MPI_Finalize();
+	
 	return 0;
 
 }
