@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-typedef unsigned __int64 integer;
+typedef unsigned long long integer;
 const size_t size = sizeof(integer);
 
 
