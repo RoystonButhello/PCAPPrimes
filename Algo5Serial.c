@@ -44,10 +44,14 @@ integer trimSize(integer n)
 int main()
 {
 	//Range: Data-type dependent
-	integer n; printf("Enter limit: "); scanf("%llu", &n); n = bound(n);
+	integer n; 
+	printf("Enter limit: "); 
+	scanf("%llu", &n); n = bound(n);
+	
 	integer m = sqrt(n);
 	integer blocksize = m >> 1;
 	integer plen = trimSize(m);
+	
 	if (m % 2 == 0) m--;
 
 	//Prep file-pointer to write results to text file
@@ -61,6 +65,7 @@ int main()
 	//Boolean array initialized to false
 	_Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
 	integer *P = (integer *)calloc(plen, size);
+	
 	if (mark == NULL || P == NULL) { printf("Memory Allocation Failed!\n"); exit(1); }
 	integer i, j, k;
 
@@ -79,7 +84,7 @@ int main()
 				for (j = i * i; j <= m; j += (i << 1))	//j->[i^2,n] | increments by 2*i
 					mark[j >> 1] = 1;
 			}
-			fprintf("%llu\n", i);
+			printf("%llu\n", i);
 			P[k++] = i;
 		}
 	}
@@ -115,7 +120,7 @@ int main()
 		CPU_TIME2 += ((double)(END_TIME - START_TIME)) / CLOCKS_PER_SEC;
 		for (i = 0; i < limit; i++)
 			if (!mark[i])
-				fprintf("%llu\n", min + (i << 1) + 1);
+				printf("%llu\n", min + (i << 1) + 1);
 		START_TIME = clock();
 		min += (blocksize << 1);
 		max += (blocksize << 1);
