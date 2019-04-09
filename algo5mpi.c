@@ -3,6 +3,7 @@
 //Phase 2 covers seed values beyond sqrt(n) in blocks
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <math.h>
 #include <time.h>
 #include <mpi.h>
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
     integer n;
 	printf("Enter limit: "); 
 	scanf("%llu", &n); 
-
+    
 	n = bound(n);
 	integer m = sqrt(n);
 	integer blocksize = m >> 1;
@@ -63,6 +64,8 @@ int main(int argc, char *argv[])
 	
 	if (m % 2 == 0) 
 		m--;
+    _Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
+	integer *P = (integer *)calloc(plen, size);
 
 	//Prep file-pointer to write results to text file
 	/*FILE *fp = fopen("primes.txt", "w");
@@ -73,8 +76,7 @@ int main(int argc, char *argv[])
 	}*/
 
 	//Boolean array initialized to false
-	_Bool *mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
-	integer *P = (integer *)calloc(plen, size);
+	
 	
 	if (mark == NULL || P == NULL) { printf("Memory Allocation Failed!\n"); exit(1); }
 	integer i, j, k;
