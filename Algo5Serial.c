@@ -46,13 +46,15 @@ int main()
 	//Range: Data-type dependent
 	integer n; 
 	printf("Enter limit: "); 
-	scanf("%llu", &n); n = bound(n);
-	
+	scanf("%llu", &n); 
+
+	n = bound(n);
 	integer m = sqrt(n);
 	integer blocksize = m >> 1;
 	integer plen = trimSize(m);
 	
-	if (m % 2 == 0) m--;
+	if (m % 2 == 0) 
+		m--;
 
 	//Prep file-pointer to write results to text file
 	/*FILE *fp = fopen("primes.txt", "w");
