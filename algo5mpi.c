@@ -47,7 +47,7 @@ integer plen;
 
 //Global declaration of Boolean array
 _Bool *mark;
-integer *P;
+int *P;
 
 //Log execution time
 clock_t START_TIME, END_TIME;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     
        //Boolean array initialized to false
        mark = (_Bool *)calloc(blocksize, sizeof(_Bool));	//Represents [2,3,5,7,9,11,...,sqrt(n)]
-	   P = (integer *)calloc(plen, size);
+	   P = (int *)calloc(plen, size);
 	
 	   if (mark == NULL || P == NULL) 
 	   { 
