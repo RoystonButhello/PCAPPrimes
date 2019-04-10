@@ -11,6 +11,22 @@
 typedef unsigned long long integer;
 const size_t size = sizeof(integer);
 
+//Max limit 1XE10
+    
+//Benchmarks 
+    
+//limit tested:1E9
+//Algo5Serial.c:SETUP_PHASE_CPU_TIME:0.021s
+//Algo5Serial.c:COMPUTE_PHASE_CPU_TIME:7.352s
+//algo5mpi.c:SETUP_PHASE_CPU_TIME:0.026s   (after adding if(p_rank==0))
+//algo5mpi.c:COMPUTE_PHASE_CPU_TIME:7.173s (after adding if(p_rank==0))
+   
+//limit tested:1E10
+//Algo5Serial.c:SETUP_PHASE_CPU_TIME:0.025s
+//Algo5Serial.c:COMPUTE_PHASE_CPU_TIME:65.218s
+//algo5mpi.c:SETUP_PHASE_CPU_TIME:0.025s
+//algo5mpi.c:COMPUTE_PHASE_CPU_TIME:67.384s
+
 //The number of primes to find
 integer n;
 
@@ -134,16 +150,7 @@ int main(int argc, char *argv[])
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
 	//Doubled as a blocksize of X covers 2X digits
 
-	//Max limit 1XE10
-    
-    //Benchmarks 
-    //limit tested:1E9
-    //Algo5Serial.c:SETUP_PHASE_CPU_TIME:0.021s
-    //Algo5Serial.c:COMPUTE_PHASE_CPU_TIME:7.352s
-    //algo5mpi.c:SETUP_PHASE_CPU_TIME:0.026s   (after adding if(p_rank==0))
-    //algo5mpi.c:COMPUTE_PHASE_CPU_TIME:7.173s (after adding if(p_rank==0))
-   
-    integer i,j;
+	integer i,j;
 
 	integer min = blocksize << 1;
 	integer max = blocksize << 2;
