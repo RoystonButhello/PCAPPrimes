@@ -27,6 +27,17 @@ const size_t size = sizeof(integer);
 //algo5mpi.c:SETUP_PHASE_CPU_TIME:0.025s
 //algo5mpi.c:COMPUTE_PHASE_CPU_TIME:67.384s
 
+//limit tested:1E6
+//algo5mpi.c:SETUP_PHASE_CPU_TIME:0.002s without MPI_Bcast and with Bcast 
+//algo5mpi.c:COMPUTE_PHASE_CPU_TIME:0.009s without MPI_Bcast and with Bcast
+
+//limit tested:1E8
+//algo5mpi.c:SETUP_PHASE_CPU_TIME:0.006s without MPI_Bcast  
+//algo5mpi.c:COMPUTE_PHASE_CPU_TIME:0.772s without MPI_Bcast 
+//algo5mpi.c:SETUP_PHASE_CPU_TIME:0.005s with MPI_Bcast  
+//algo5mpi.c:COMPUTE_PHASE_CPU_TIME:0.717s with MPI_Bcast 
+
+
 //The number of primes to find
 integer n;
 
@@ -145,6 +156,7 @@ int main(int argc, char *argv[])
     
     }
 	
+	MPI_Bcast(&n,1,MPI_C_BOOL,0,MPI_COMM_WORLD);
 	
 	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
