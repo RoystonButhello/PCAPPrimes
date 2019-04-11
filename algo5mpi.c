@@ -8,7 +8,7 @@
 #include <mpi.h>
 
 
-typedef signed long long integer;
+typedef unsigned long long integer;
 const size_t size = sizeof(integer);
 
 //Max limit 1XE10
