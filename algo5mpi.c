@@ -157,9 +157,9 @@ int main(int argc, char *argv[])
     
     }
 	
-	MPI_Bcast(&n,1,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	MPI_Bcast(&m,1,MPI_C_BOOL,0,MPI_COMM_WORLD);
-	MPI_Bcast(&blocksize,1,MPI_C_BOOL,0,MPI_COMM_WORLD);
+	//MPI_Bcast(&n,1,MPI_LONG_LONG_INT,0,MPI_COMM_WORLD);
+	//MPI_Bcast(&m,1,MPI_LONG_LONG_INT,0,MPI_COMM_WORLD);
+	//MPI_Bcast(&blocksize,1,MPI_LONG_LONG_INT,0,MPI_COMM_WORLD);
 	
 	//Beginning of segmentation
 	//Calculate all primes in the range [m,n] in segmented blocks of size (m/2)
