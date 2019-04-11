@@ -8,6 +8,13 @@
 typedef unsigned long long integer;
 const size_t size = sizeof(integer);
 
+integer m;
+integer n;
+integer blocksize;
+integer plen;
+//Log execution time
+clock_t START_TIME, END_TIME;
+double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
 
 //Utility function to calculate postive integer-powers
 integer power(integer val, integer exp)
@@ -44,14 +51,14 @@ integer trimSize(integer n)
 int main()
 {
 	//Range: Data-type dependent
-	integer n; 
+	 
 	printf("Enter limit: "); 
 	scanf("%llu", &n); 
 
 	n = bound(n);
-	integer m = sqrt(n);
-	integer blocksize = m >> 1;
-	integer plen = trimSize(m);
+	m = sqrt(n);
+	blocksize = m >> 1;
+	plen = trimSize(m);
 	
 	if (m % 2 == 0) 
 		m--;
@@ -71,9 +78,7 @@ int main()
 	if (mark == NULL || P == NULL) { printf("Memory Allocation Failed!\n"); exit(1); }
 	integer i, j, k;
 
-	//Log execution time
-	clock_t START_TIME, END_TIME;
-	double  CPU_TIME1 = 0.0, CPU_TIME2 = 0.0;
+	
 
 	//Setup-Phase: Calculate all primes in the range [3,m]
 	START_TIME = clock();
@@ -106,7 +111,8 @@ int main()
 	{
 		if (max >= n)
 		{
-			max = n; limit = (max - min) >> 1 + 1;
+			max = n; 
+			limit = (max - min) >> 1 + 1;
 		}
 		mark = (_Bool *)calloc(blocksize + 1, sizeof(_Bool));
 		for (i = 0;i < plen;i++)
